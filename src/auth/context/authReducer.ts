@@ -1,33 +1,38 @@
 import { types } from '../types';
 
-export interface AuthState {
-  loggedIn: boolean;
-  name?: string;
+interface UserInfo {
+  id: string;
+  name: string;
 }
 
-interface AuthAction {
+export interface AuthState {
+  loggedIn: boolean;
+  user?: UserInfo;
+}
+
+export interface AuthAction {
   type: typeof types.login;
-  payload: string;
+  payload: UserInfo | undefined;
 }
 
 const initialState = {
   loggedIn: false,
-  name: undefined,
+  user: undefined,
 };
 
-export const authReducer = (state: AuthState = initialState, action: AuthAction) => {
+export const authReducer = (state: AuthState = initialState, action: AuthAction): AuthState => {
   switch (action.type) {
     case types.login:
       return {
         ...state,
         loggedIn: true,
-        name: action.payload,
+        user: action.payload,
       };
     case types.logout:
       return {
         ...state,
         loggedIn: false,
-        name: undefined,
+        user: undefined,
       };
     default:
       return state;
